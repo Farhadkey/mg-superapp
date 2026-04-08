@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useMsal } from "@azure/msal-react";
+import { useMsal, AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react";
 import type { PageId, AppItem, UserProfile } from "./types";
 import { notifications, currentUser as defaultUser } from "./data/mockData";
 import { openExternalUrl } from "./utils/openExternal";
@@ -173,7 +173,7 @@ function AppContent() {
 }
 
 function App() {
-  const { accounts } = useMsal();
+  const { instance, accounts } = useMsal();
   const [user, setUser] = useState<UserProfile>({ ...defaultUser, email: "" });
 
   useEffect(() => {
@@ -188,16 +188,44 @@ function App() {
         .toUpperCase()
         .slice(0, 2);
       setUser((prev) => ({ ...prev, name: fullName, email, avatar: initials }));
-    } else {
-      // No account yet (pre-login or local dev)
-      setUser((prev) => ({ ...prev, email: defaultUser.email }));
     }
   }, [accounts]);
 
   return (
-    <UserProfileProvider defaultUser={user}>
-      <AppContent />
-    </UserProfileProvider>
+    <>
+      <UnauthenticatedTemplate>
+        <LoginScreen onLogin={() => instance.loginRedirect({ scopes: ["User.Read"] })} />
+      </UnauthenticatedTemplate>
+      <AuthenticatedTemplate>
+        <UserProfileProvider defaultUser={user}>
+          <AppContent />
+        </UserProfileProvider>
+      </AuthenticatedTemplate>
+    </>
+  );
+}
+
+function LoginScreen({ onLogin }: { onLogin: () => void }) {
+  return (
+    <div className="app-loading-screen">
+      <h2 style={{ marginBottom: 12 }}>Momentum Glass</h2>
+      <p style={{ marginBottom: 24, color: "#666" }}>Sign in with your company account to continue</p>
+      <button
+        onClick={onLogin}
+        style={{
+          padding: "12px 32px",
+          fontSize: 16,
+          fontWeight: 600,
+          border: "none",
+          borderRadius: 8,
+          background: "#0078d4",
+          color: "#fff",
+          cursor: "pointer",
+        }}
+      >
+        Sign In
+      </button>
+    </div>
   );
 }
 
