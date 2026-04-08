@@ -20,7 +20,6 @@ export type PageId =
   | "reports-hub"
   | "app-detail"
   | "search"
-  | "faceapp"
   | "mrf";
 
 // ─── Shared Props ───────────────────────────────────

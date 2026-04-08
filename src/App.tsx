@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getContext } from "@microsoft/power-apps/app";
+import { useMsal } from "@azure/msal-react";
 import type { PageId, AppItem, UserProfile } from "./types";
 import { notifications, currentUser as defaultUser } from "./data/mockData";
 import { openExternalUrl } from "./utils/openExternal";
@@ -18,7 +18,6 @@ import PreConHub from "./pages/PreConHub";
 import ReportsHub from "./pages/ReportsHub";
 import AppDetail from "./pages/AppDetail";
 import SearchResults from "./pages/SearchResults";
-import FaceApp from "./pages/FaceApp";
 import MRFApp from "./pages/MRFApp";
 import "./App.css";
 
@@ -35,7 +34,6 @@ const pageTitles: Record<PageId, string> = {
   "reports-hub": "Reports Hub",
   "app-detail": "App Details",
   search: "Search",
-  faceapp: "FaceApp",
   mrf: "Material Request Form",
 };
 
@@ -47,7 +45,6 @@ const hubPages: PageId[] = [
   "reports-hub",
   "app-detail",
   "search",
-  "faceapp",
   "mrf",
 ];
 
@@ -62,14 +59,13 @@ function AppContent() {
   const [mrfCode, setMrfCode] = useState<string | null>(null);
 
   useEffect(() => {
-    getContext().then((ctx) => {
-      // Extract MRFCode from Power Apps context query params
-      const qp = (ctx as { app?: { queryParams?: Record<string, string> } }).app?.queryParams;
-      if (qp?.MRFCode) {
-        setMrfCode(qp.MRFCode);
-        setPage("mrf");
-      }
-    }).catch(() => { /* use default user on local dev */ });
+    // Extract MRFCode from URL query params (replaces Power Apps context)
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("MRFCode");
+    if (code) {
+      setMrfCode(code);
+      setPage("mrf");
+    }
   }, []);
 
   const unreadCount = notifs.filter((n) => !n.isRead).length;
@@ -135,8 +131,6 @@ function AppContent() {
         return selectedApp ? <AppDetail app={selectedApp} onBack={goBack} /> : null;
       case "search":
         return <SearchResults onNavigate={navigate} />;
-      case "faceapp":
-        return <FaceApp userEmail={profile.email} />;
       case "mrf":
         return <MRFApp userEmail={profile.email} userName={profile.name} mrfCode={mrfCode} />;
     }
@@ -179,13 +173,14 @@ function AppContent() {
 }
 
 function App() {
-  // Start with empty email so the profile fetch waits for getContext()
+  const { accounts } = useMsal();
   const [user, setUser] = useState<UserProfile>({ ...defaultUser, email: "" });
 
   useEffect(() => {
-    getContext().then((ctx) => {
-      const fullName = ctx.user.fullName || defaultUser.name;
-      const email = ctx.user.userPrincipalName || defaultUser.email;
+    const account = accounts[0];
+    if (account) {
+      const fullName = account.name || defaultUser.name;
+      const email = account.username || defaultUser.email;
       const initials = fullName
         .split(" ")
         .map((w: string) => w[0])
@@ -193,11 +188,11 @@ function App() {
         .toUpperCase()
         .slice(0, 2);
       setUser((prev) => ({ ...prev, name: fullName, email, avatar: initials }));
-    }).catch(() => {
-      // Local dev: use mock email so the profile fetch can still run
+    } else {
+      // No account yet (pre-login or local dev)
       setUser((prev) => ({ ...prev, email: defaultUser.email }));
-    });
-  }, []);
+    }
+  }, [accounts]);
 
   return (
     <UserProfileProvider defaultUser={user}>
