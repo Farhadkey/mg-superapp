@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "appId": "bdb8e893-4908-4e15-b643-e59d16cad7e9",
+  "appDisplayName": "MG Super App",
+  "region": "prod",
+  "environmentId": "5f6ab8fb-609c-e444-98e7-b1f3eba5630c",
+  "description": "",
+  "buildPath": "./dist",
+  "buildEntryPoint": "index.html",
+  "localAppUrl": "http://localhost:3000",
+  "logoPath": "Default",
+  "connectionReferences": {},
+  "databaseReferences": {}
+}
