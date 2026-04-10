@@ -42,7 +42,7 @@
 
   /* Safe area */
   --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: max(env(safe-area-inset-bottom, 0px), 54px);
+  --safe-bottom: max(env(safe-area-inset-bottom, 0px), 10px);
 
   /* Typography */
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
