@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useMsal } from "@azure/msal-react";
 import type { NavigablePageProps, UserProfile } from "../types";
 // import { favoriteApps, recentApps } from "../data/mockData"; // temporarily unused
 import SectionHeader from "../components/ui/SectionHeader";
@@ -36,6 +37,7 @@ interface ProfileProps extends NavigablePageProps {
 }
 
 export default function Profile({ onNavigate: _onNavigate, user }: ProfileProps) {
+  const { instance } = useMsal();
   // temporarily unused — notifications feature inactive
   const [_notifs] = useState<Record<string, boolean>>(
     Object.fromEntries(notifSettings.map((n) => [n.key, n.defaultOn])),
@@ -151,6 +153,27 @@ export default function Profile({ onNavigate: _onNavigate, user }: ProfileProps)
             </div>
           ))}
         </div>
+      </section>
+
+      {/* ── Sign Out ─────────────────────────────── */}
+      <section className="mg-section" style={{ textAlign: "center", paddingBottom: 32 }}>
+        <button
+          onClick={() => instance.logoutRedirect({ postLogoutRedirectUri: "/" })}
+          style={{
+            padding: "12px 40px",
+            fontSize: 16,
+            fontWeight: 600,
+            border: "none",
+            borderRadius: 8,
+            background: "#d32f2f",
+            color: "#fff",
+            cursor: "pointer",
+            width: "100%",
+            maxWidth: 320,
+          }}
+        >
+          Sign Out
+        </button>
       </section>
     </div>
   );
