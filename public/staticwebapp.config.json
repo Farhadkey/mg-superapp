@@ -1,0 +1,13 @@
+{
+  "mimeTypes": {
+    ".json": "application/json",
+    ".js": "application/javascript"
+  },
+  "globalHeaders": {
+    "Service-Worker-Allowed": "/"
+  },
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/icon-*.png", "/manifest.json", "/sw.js", "/logo.svg", "/assets/*"]
+  }
+}
