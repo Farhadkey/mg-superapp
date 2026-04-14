@@ -19,6 +19,7 @@ import ReportsHub from "./pages/ReportsHub";
 import AppDetail from "./pages/AppDetail";
 import SearchResults from "./pages/SearchResults";
 import MRFApp from "./pages/MRFApp";
+import Confirm from "./pages/Confirm";
 import "./App.css";
 
 const pageTitles: Record<PageId, string> = {
@@ -190,6 +191,11 @@ function App() {
       setUser((prev) => ({ ...prev, name: fullName, email, avatar: initials }));
     }
   }, [accounts]);
+
+  // Anonymous confirm page — no auth required
+  if (window.location.pathname === "/confirm") {
+    return <Confirm />;
+  }
 
   return (
     <>

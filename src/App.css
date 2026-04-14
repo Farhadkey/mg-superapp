@@ -2284,3 +2284,62 @@
   color: #6b7280;
   margin: 0;
 }
+
+/* ===========================
+   CONFIRM PAGE (anonymous)
+   =========================== */
+
+.confirm-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: linear-gradient(135deg, #1B2D45 0%, #274060 100%);
+  padding: 24px;
+}
+
+.confirm-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 48px 32px;
+  text-align: center;
+  max-width: 380px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+.confirm-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #e6f4ea;
+  color: #1e7e34;
+  font-size: 32px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.confirm-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1B2D45;
+  margin: 0 0 12px;
+}
+
+.confirm-text {
+  font-size: 1rem;
+  color: #374151;
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.confirm-hint {
+  font-size: 0.88rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
