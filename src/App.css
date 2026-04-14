@@ -2343,3 +2343,20 @@
   margin: 0;
   line-height: 1.5;
 }
+
+.confirm-close-btn {
+  margin-top: 24px;
+  padding: 12px 40px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  background: #1B2D45;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.confirm-close-btn:active {
+  background: #274060;
+}

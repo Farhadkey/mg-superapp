@@ -7,7 +7,10 @@ export default function Confirm() {
         <p className="confirm-text">
           Your task has been completed successfully.
         </p>
-        <p className="confirm-hint">You can now close this tab and return to the app.</p>
+        <p className="confirm-hint">You can now close this tab.</p>
+        <button className="confirm-close-btn" onClick={() => window.close()}>
+          Close
+        </button>
       </div>
     </div>
   );
